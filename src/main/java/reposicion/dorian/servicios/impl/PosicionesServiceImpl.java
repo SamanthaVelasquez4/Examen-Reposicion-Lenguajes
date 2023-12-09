@@ -28,7 +28,7 @@ public class PosicionesServiceImpl implements PosicionesService{
             return "Se ocupan al menos 6 equipos para hacer la simulacion";
         }else{
 
-            //Aqui se iba a llamar la funcion de partido 
+            //Aqui se iba a llamar la funcion de partido para cada equipo
         }    
 
         return "Simulacion creada";
@@ -63,6 +63,9 @@ public class PosicionesServiceImpl implements PosicionesService{
             posicion1.setGolesFavor(golesEquipo1);
             posicion1.setGolesContra(golesEquipo2);
             posicion1.setEmpates(0);
+            posicion1.setGanados(0);
+            posicion1.setPuntos(0);
+            posicion1.setPerdidos(0);
         }
 
         //Comprueba si existe el equipo 2
@@ -74,8 +77,29 @@ public class PosicionesServiceImpl implements PosicionesService{
             posicion2.setCodigoEquipo(idEquipo2);
             posicion2.setGolesContra(golesEquipo1);
             posicion2.setGolesFavor(golesEquipo2);
+            posicion2.setGanados(0);
+            posicion2.setPuntos(0);
+            posicion2.setPerdidos(0);
         }
         
+        if(golesEquipo1==golesEquipo2){
+            posicion1.setEmpates(posicion1.getEmpates()+1);
+            posicion2.setEmpates(posicion2.getEmpates()+1);
+            posicion1.setPuntos(posicion1.getPuntos()+1);
+            posicion2.setPuntos(posicion2.getPuntos()+1);
+        }else if(golesEquipo1>golesEquipo2){
+            posicion1.setGanados(posicion1.getGanados()+1);
+            posicion2.setPerdidos(posicion2.getPerdidos()+1);
+            posicion1.setPuntos(posicion1.getPuntos()+3);
+        }else{
+            posicion2.setGanados(posicion2.getGanados()+1);
+            posicion1.setPerdidos(posicion1.getPerdidos()+1);
+            posicion2.setPuntos(posicion2.getPuntos()+3);
+        }
+
+        //guardar
+        this.posicionesRepository.save(posicion1);
+        this.posicionesRepository.save(posicion2);
 
         
     }
